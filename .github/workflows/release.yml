@@ -1,0 +1,52 @@
+name: Release to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify dist output
+        run: |
+          test -f dist/client/index.js || (echo "Missing dist/client/index.js" && exit 1)
+          test -f dist/client/index.d.ts || (echo "Missing dist/client/index.d.ts" && exit 1)
+          echo "Build artifacts verified"
+
+      - name: Check version matches tag
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "Version mismatch: package.json=$PKG_VERSION, tag=$TAG_VERSION"
+            exit 1
+          fi
+          echo "Version $PKG_VERSION matches tag"
+
+      - name: Publish to npm
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
