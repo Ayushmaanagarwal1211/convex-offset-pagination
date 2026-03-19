@@ -1,0 +1,51 @@
+{
+  "name": "@ayushmaanagarwal1211/convex-offset-pagination",
+  "version": "0.1.0",
+  "description": "Offset-based pagination for Convex — page numbers, total counts, and random page access powered by @convex-dev/aggregate.",
+  "keywords": [
+    "convex",
+    "pagination",
+    "offset-pagination",
+    "page-numbers",
+    "convex-component"
+  ],
+  "homepage": "https://github.com/ayushmaanagarwal1211/convex-offset-pagination#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayushmaanagarwal1211/convex-offset-pagination.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ayushmaanagarwal1211/convex-offset-pagination/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "ayushmaanagarwal1211",
+  "type": "module",
+  "main": "./dist/client/index.js",
+  "types": "./dist/client/index.d.ts",
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/client/index.d.ts",
+      "default": "./dist/client/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@convex-dev/aggregate": "^0.2.1"
+  },
+  "peerDependencies": {
+    "convex": "^1.24.8"
+  },
+  "devDependencies": {
+    "convex": "^1.33.1",
+    "typescript": "~5.5.0"
+  }
+}
